@@ -1,10 +1,14 @@
-import { Card } from "@/components/ui/card";
+import AssignedActionsCard from "@/components/DashboardPage/AssignedActionsCard";
+import { getDashboardData } from "./data";
 
-const DashboardPage = (): React.JSX.Element => {
-    return <div className="flex">
-        <Card className="border-stone-800 py-2 px-8 mb-8 w-1/2">
-        </Card>
+const DashboardPage = async (): Promise<React.JSX.Element> => {
+  const { unfinishedFines } = await getDashboardData();
+
+  return (
+    <div className="flex">
+      <AssignedActionsCard fines={unfinishedFines} />
     </div>
-}
+  );
+};
 
 export default DashboardPage;

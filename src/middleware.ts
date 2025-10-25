@@ -1,7 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { auth0 } from "./lib/auth0";
-import { getAvialableRoutes } from "./routes";
-
+import { getAvailableRoutes } from "./routes";
 
 export async function middleware(request: NextRequest) {
   const session = await auth0.getSession(request);
@@ -9,7 +8,7 @@ export async function middleware(request: NextRequest) {
 
   if (
     !session?.tokenSet.accessToken &&
-      getAvialableRoutes({}).some((route) => pathname.includes(route.url))
+    getAvailableRoutes({}).some((route) => pathname.includes(route.url))
   ) {
     const loginUrl = new URL("/auth/login", request.url);
     // Add a `returnTo` query parameter so the user can be redirected back after login

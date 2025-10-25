@@ -1,4 +1,4 @@
-import {  HomeIcon, ReceiptIcon, UserIcon, UsersIcon } from "lucide-react";
+import { HomeIcon, ReceiptIcon, UserIcon, UsersIcon } from "lucide-react";
 
 type RouteConfigItem = {
   id: string;
@@ -8,11 +8,11 @@ type RouteConfigItem = {
 };
 
 type Props = {
-    id?: number;
-}
+  id?: number;
+};
 
-export const getAvialableRoutes = ({ id }: Props): RouteConfigItem[] => {
-const userId = `/${id}`
+export const getAvailableRoutes = ({ id }: Props): RouteConfigItem[] => {
+  const userId = `/${id}`;
 
   return [
     {

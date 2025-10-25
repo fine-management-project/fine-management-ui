@@ -1,4 +1,4 @@
-import { getAvialableRoutes } from "@/routes";
+import { getAvailableRoutes } from "@/routes";
 import {
   Sidebar,
   SidebarContent,
@@ -13,7 +13,7 @@ import {
 import Link from "next/link";
 
 const AppSideBar = (): React.JSX.Element => {
-  const routes = getAvialableRoutes({});
+  const routes = getAvailableRoutes({});
 
   return (
     <Sidebar variant="sidebar">
