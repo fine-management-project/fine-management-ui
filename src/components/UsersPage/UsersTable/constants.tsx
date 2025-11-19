@@ -1,10 +1,10 @@
-import { UserProfile } from "@/lib/models/user";
+import { User } from "@/lib/models/user";
 import { formatBooleanToTextString } from "@/lib/utils/format";
 import { ColumnDef } from "@tanstack/react-table";
 import { TrashIcon, EditIcon, ReceiptIcon } from "lucide-react";
 import Link from "next/link";
 
-export const columns: ColumnDef<UserProfile>[] = [
+export const columns: ColumnDef<User>[] = [
   {
     accessorKey: "id",
     header: "#",
@@ -32,18 +32,27 @@ export const columns: ColumnDef<UserProfile>[] = [
     header: "Address",
     cell: ({ row }) => (
       <span>
-        {row.original.country}, {row.original.city}, {row.original.street}
+        {row.original.address.country.name}, {row.original.address.city},
+        {row.original.address.street}, {row.original.address.house},
+        {row.original.address.apartment}
       </span>
     ),
   },
   {
-    accessorKey: "isActive",
-    header: "Active",
-    accessorFn: (value) => formatBooleanToTextString(value.isActive),
+    accessorKey: "blocked",
+    header: "Blocked",
+    accessorFn: (value) => formatBooleanToTextString(value.blocked),
   },
   {
     accessorKey: "role",
     header: "Role",
+    cell: ({ row }) => (
+      <span>
+        {row.original.roles.map(({ id, name }) => (
+          <span key={id}>{name}</span>
+        ))}
+      </span>
+    ),
   },
   {
     accessorKey: "action",

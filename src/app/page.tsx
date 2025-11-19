@@ -1,9 +1,9 @@
 import { Button } from "@/components/ui/button";
-import { auth0 } from "@/lib/auth0";
+import { createServerSession } from "@/lib/session/server";
 import Link from "next/link";
 
 export default async function Home() {
-  const session = await auth0.getSession();
+  const session = await createServerSession();
 
   return (
     <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)] bg-stone-800 text-stone-50">
@@ -17,18 +17,17 @@ export default async function Home() {
           </h2>
           {!session && (
             <Button variant="link" className="text-4xl text-purple-400">
-              <a href="/auth/login">Login</a>
+              <a href="/auth/sign-in">Sign In</a>
             </Button>
           )}
           {session && (
             <div className="flex justify-center text-purple-400">
-              <Link href="/dashboard" className="text-4xl text-purple-400 hover:underline">
+              <Link
+                href="/dashboard"
+                className="text-4xl text-purple-400 hover:underline"
+              >
                 Go to the Dashboard
               </Link>
-              <span className="text-4xl ml-4">|</span>
-              <Button variant="link" className="text-4xl text-purple-400">
-                <a href="/auth/logout">Log out</a>
-              </Button>
             </div>
           )}
         </div>

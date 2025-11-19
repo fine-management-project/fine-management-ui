@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import { UserProfile } from "@/lib/models/user";
+import { User } from "@/lib/models/user";
 import {
   flexRender,
   getCoreRowModel,
@@ -8,10 +8,17 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import { columns } from "./constants";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 
 type Props = {
-  data: UserProfile[];
+  data: User[];
 };
 
 const UsersTable = ({ data }: Props): React.JSX.Element => {

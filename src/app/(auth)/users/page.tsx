@@ -1,10 +1,16 @@
 import UsersTable from "@/components/UsersPage/UsersTable/UsersTable";
-import { usersMock } from "./mock";
 import { Card } from "@/components/ui/card";
 import UsersFilters from "@/components/UsersPage/UsersFilters/UsersFilters";
 import { UsersPageProvider } from "@/components/UsersPage/context";
+import { getPageData } from "./data";
 
-const UsersPage = (): React.JSX.Element => {
+const UsersPage = async (): Promise<React.JSX.Element> => {
+  const { data, total, error } = await getPageData();
+
+  if (!data || total === null || error) {
+    return <div>Error occurred! {error?.message}</div>;
+  }
+
   return (
     <div className="w-full">
       <UsersPageProvider>
@@ -13,7 +19,7 @@ const UsersPage = (): React.JSX.Element => {
         </Card>
 
         <Card className="border-stone-800 p-8">
-          <UsersTable data={usersMock} />
+          <UsersTable data={data} />
         </Card>
       </UsersPageProvider>
     </div>

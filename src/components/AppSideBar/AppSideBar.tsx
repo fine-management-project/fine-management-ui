@@ -1,4 +1,4 @@
-import { getAvailableRoutes } from "@/routes";
+import { ROUTES, RoutesId } from "@/routes";
 import {
   Sidebar,
   SidebarContent,
@@ -13,7 +13,12 @@ import {
 import Link from "next/link";
 
 const AppSideBar = (): React.JSX.Element => {
-  const routes = getAvailableRoutes({});
+  const routsToShow = [
+    ROUTES[RoutesId.dashboard],
+    ROUTES[RoutesId.fines],
+    ROUTES[RoutesId.profile],
+    ROUTES[RoutesId.users],
+  ];
 
   return (
     <Sidebar variant="sidebar">
@@ -29,7 +34,7 @@ const AppSideBar = (): React.JSX.Element => {
           </SidebarGroupLabel>
           <SidebarGroupContent className="mt-4">
             <SidebarMenu>
-              {routes.map(({ id, label, icon, url }) => (
+              {routsToShow.map(({ id, label, icon, url }) => (
                 <SidebarMenuItem className="my-1" key={id}>
                   <SidebarMenuButton asChild>
                     <Link className="h-10" href={url}>
