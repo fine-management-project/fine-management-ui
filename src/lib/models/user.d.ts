@@ -1,14 +1,16 @@
-import { Roles } from "./role";
+import { Role } from "./role";
+import { Address } from "./address";
 
-export type UserProfile = {
+export type User = {
   id: string;
   firstName: string;
   lastName: string;
   email: string;
-  country: string;
-  city: string;
-  street: string;
   age: number;
-  role: Roles;
-  isActive: boolean;
+  address: Address;
+  roles: Role[];
+  isEmailVerified: boolean;
+  blocked: boolean;
+  createdAt: string;
+  updatedAt: string;
 };

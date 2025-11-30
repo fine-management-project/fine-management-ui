@@ -1,23 +1,39 @@
-import { NextResponse, type NextRequest } from "next/server";
-import { auth0 } from "./lib/auth0";
-import { getAvailableRoutes } from "./routes";
+import { NextRequest, NextResponse } from "next/server";
+import { ROUTES, RoutesId } from "./routes";
+import { createServerSession } from "./lib/session/server";
 
 export async function middleware(request: NextRequest) {
-  const session = await auth0.getSession(request);
   const { pathname } = request.nextUrl;
+  const session = await createServerSession();
+  const userId = session.getUserId();
+  const hasToken = session.hasToken();
 
   if (
-    !session?.tokenSet.accessToken &&
-    getAvailableRoutes({}).some((route) => pathname.includes(route.url))
+    [
+      ROUTES[RoutesId.signIn].url,
+      ROUTES[RoutesId.signUp].url,
+      ROUTES[RoutesId.unauthenticated].url,
+    ].includes(pathname) &&
+    hasToken &&
+    !!userId
   ) {
-    const loginUrl = new URL("/auth/login", request.url);
-    // Add a `returnTo` query parameter so the user can be redirected back after login
-    loginUrl.searchParams.set("returnTo", pathname);
-
-    return NextResponse.redirect(loginUrl);
+    return NextResponse.redirect(
+      new URL(ROUTES[RoutesId.profile].url.replace(":id", userId), request.url)
+    );
   }
 
-  return await auth0.middleware(request);
+  if (
+    Object.values(ROUTES).some(
+      (route) => pathname.includes(route.url) && route.authProtected
+    ) &&
+    !hasToken
+  ) {
+    const signInUrl = new URL("/auth/sign-in", request.url);
+
+    return NextResponse.redirect(signInUrl);
+  }
+
+  return NextResponse.next();
 }
 
 export const config = {
