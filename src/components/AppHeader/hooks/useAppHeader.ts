@@ -1,6 +1,5 @@
 import { AuthService } from "@/lib/api/AuthService/AuthService";
 import { SessionContext } from "@/lib/session/SessionContext";
-import { UserContext } from "@/lib/state/UserContext/UserContext";
 import { ROUTES, RoutesId } from "@/routes";
 import { usePathname, useRouter } from "next/navigation";
 import { useContext, useState } from "react";
@@ -18,7 +17,6 @@ export const useAppHeader = (): UseAppHeader => {
   const router = useRouter();
   const pathName = usePathname();
   const { session } = useContext(SessionContext);
-  const { setUser } = useContext(UserContext);
 
   const onSignOut = async () => {
     try {
@@ -29,14 +27,10 @@ export const useAppHeader = (): UseAppHeader => {
         const authClient = new AuthService();
         await authClient.signOut(token);
       }
-
-      setUser(null);
-      session.clear();
-
-      router.push(ROUTES[RoutesId.home].url);
-    } catch {
     } finally {
       setLoading(false);
+      session.clear();
+      router.push(ROUTES[RoutesId.home].url);
     }
   };
 

@@ -1,9 +1,11 @@
 import axios from "axios";
 
 export const createApiClient = (baseUrl: string) => {
-  return axios.create({
+  const apiClient = axios.create({
     baseURL: baseUrl,
   });
+
+  return apiClient;
 };
 
 export const userManagementApiClient = createApiClient(

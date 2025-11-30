@@ -1,23 +1,40 @@
 "use client";
-import { createContext, useMemo } from "react";
+import {
+  createContext,
+  Dispatch,
+  SetStateAction,
+  useMemo,
+  useState,
+} from "react";
 import { Session } from "./Session";
 
 export type SessionContextProps = {
   session: Session;
 };
 
-export const SessionContext = createContext<SessionContextProps>({
+export type SessionContextValues = {
+  session: Session;
+  setSession: Dispatch<SetStateAction<Session>>;
+};
+
+export const SessionContext = createContext<SessionContextValues>({
   session: new Session(),
+  setSession: () => {},
 });
 
 export const SessionContextProvider = (
   props: React.PropsWithChildren<Partial<SessionContextProps>>
 ) => {
-  const value: SessionContextProps = useMemo(
+  const [session, setSession] = useState<Session>(
+    props.session ?? new Session()
+  );
+
+  const value: SessionContextValues = useMemo(
     () => ({
-      session: props?.session ?? new Session(),
+      session,
+      setSession,
     }),
-    [props?.session]
+    [session]
   );
 
   return (

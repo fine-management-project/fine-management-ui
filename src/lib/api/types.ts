@@ -1,3 +1,5 @@
+import { AxiosError } from "axios";
+
 export type ApiError = {
   message: string;
   statusCode: number;
@@ -25,4 +27,17 @@ export enum SortingDirection {
 export type SortingOptions<T extends string> = {
   key: T;
   direction: SortingDirection;
+};
+
+export type PaginatedPageData<T> = {
+  error?: AxiosError<ApiError>;
+  data: T | null;
+  total: number | null;
+  defaultOffset: number;
+  defaultLimit: number;
+};
+
+export type PageData<T> = {
+  error?: AxiosError<ApiError>;
+  data: T | null;
 };

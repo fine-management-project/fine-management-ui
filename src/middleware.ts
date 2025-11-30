@@ -1,4 +1,4 @@
-import { NextResponse, type NextRequest } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { ROUTES, RoutesId } from "./routes";
 import { createServerSession } from "./lib/session/server";
 
@@ -9,9 +9,11 @@ export async function middleware(request: NextRequest) {
   const hasToken = session.hasToken();
 
   if (
-    [ROUTES[RoutesId.signIn].url, ROUTES[RoutesId.signUp].url].includes(
-      pathname
-    ) &&
+    [
+      ROUTES[RoutesId.signIn].url,
+      ROUTES[RoutesId.signUp].url,
+      ROUTES[RoutesId.unauthenticated].url,
+    ].includes(pathname) &&
     hasToken &&
     !!userId
   ) {
@@ -28,11 +30,10 @@ export async function middleware(request: NextRequest) {
   ) {
     const signInUrl = new URL("/auth/sign-in", request.url);
 
-    // Add a `returnTo` query parameter so the user can be redirected back after sign in
-    signInUrl.searchParams.set("returnTo", pathname);
-
     return NextResponse.redirect(signInUrl);
   }
+
+  return NextResponse.next();
 }
 
 export const config = {

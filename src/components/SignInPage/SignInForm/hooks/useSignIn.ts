@@ -1,8 +1,7 @@
 import { AuthService } from "@/lib/api/AuthService/AuthService";
 import { SignInPayload } from "@/lib/api/AuthService/types";
-import { UserService } from "@/lib/api/UserService/UserService";
+import { Session } from "@/lib/session/Session";
 import { SessionContext } from "@/lib/session/SessionContext";
-import { UserContext } from "@/lib/state/UserContext/UserContext";
 import { ROUTES, RoutesId } from "@/routes";
 import { useMutation } from "@tanstack/react-query";
 import { AxiosError } from "axios";
@@ -17,8 +16,7 @@ export type UseSignIn = {
 };
 
 export const useSignIn = () => {
-  const { session } = useContext(SessionContext);
-  const { setUser, user } = useContext(UserContext);
+  const { session, setSession } = useContext(SessionContext);
   const router = useRouter();
 
   const mutationSignIn = useMutation<void, AxiosError<ApiError>, SignInPayload>(
@@ -28,14 +26,11 @@ export const useSignIn = () => {
 
         const { data } = await authClient.signIn(payload);
 
-        session.setToken(data.accessToken);
-        session.setUserId(data.id);
+        const newSession = new Session();
+        newSession.setToken(data.accessToken);
+        newSession.setUserId(data.id);
 
-        const userClient = new UserService(session);
-
-        const userResult = await userClient.getUserById(data.id);
-
-        setUser(userResult.data);
+        setSession(newSession);
       },
     }
   );
@@ -45,8 +40,10 @@ export const useSignIn = () => {
   };
 
   useEffect(() => {
-    if (user) router.push(ROUTES[RoutesId.profile].url.replace(":id", user.id));
-  }, [router, user]);
+    const userId = session.getUserId();
+
+    if (userId) router.push(ROUTES[RoutesId.dashboard].url);
+  }, [router, session]);
 
   return {
     onSignIn: onSignIn,

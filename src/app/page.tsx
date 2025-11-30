@@ -15,12 +15,17 @@ export default async function Home() {
           <h2 className="text-2xl text-stone-100 mb-32">
             Manage your fines & taxes in one place!
           </h2>
-          {!session && (
+          {!session.hasToken() && (
             <Button variant="link" className="text-4xl text-purple-400">
               <a href="/auth/sign-in">Sign In</a>
             </Button>
           )}
-          {session && (
+          {!session.hasToken() && (
+            <Button variant="link" className="text-4xl text-purple-400">
+              <a href="/auth/sign-up">Sign Up</a>
+            </Button>
+          )}
+          {session.hasToken() && (
             <div className="flex justify-center text-purple-400">
               <Link
                 href="/dashboard"

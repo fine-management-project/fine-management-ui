@@ -1,3 +1,4 @@
+"use client";
 import { ROUTES, RoutesId } from "@/routes";
 import {
   Sidebar,
@@ -11,14 +12,32 @@ import {
   SidebarTrigger,
 } from "../ui/sidebar";
 import Link from "next/link";
+import { useContext, useMemo } from "react";
+import { UserContext } from "@/lib/state/UserContext/UserContext";
+import { RoleOptions } from "@/lib/models/role";
 
 const AppSideBar = (): React.JSX.Element => {
-  const routsToShow = [
-    ROUTES[RoutesId.dashboard],
-    ROUTES[RoutesId.fines],
-    ROUTES[RoutesId.profile],
-    ROUTES[RoutesId.users],
-  ];
+  const { user } = useContext(UserContext);
+
+  const routesToShow = useMemo(() => {
+    const routes = [
+      ROUTES[RoutesId.dashboard],
+      ROUTES[RoutesId.fines],
+      ROUTES[RoutesId.profile],
+    ];
+
+    if (
+      user?.roles &&
+      !!user.roles.find(({ name }) => RoleOptions.admin === name)
+    ) {
+      routes.push(ROUTES[RoutesId.users]);
+    }
+
+    return routes.map((value) => ({
+      ...value,
+      url: value.url.replace(":id", user?.id ?? ""),
+    }));
+  }, [user]);
 
   return (
     <Sidebar variant="sidebar">
@@ -34,7 +53,7 @@ const AppSideBar = (): React.JSX.Element => {
           </SidebarGroupLabel>
           <SidebarGroupContent className="mt-4">
             <SidebarMenu>
-              {routsToShow.map(({ id, label, icon, url }) => (
+              {routesToShow.map(({ id, label, icon, url }) => (
                 <SidebarMenuItem className="my-1" key={id}>
                   <SidebarMenuButton asChild>
                     <Link className="h-10" href={url}>

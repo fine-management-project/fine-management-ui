@@ -1,19 +1,17 @@
 "use client";
 
+import { useCountries } from "@/hooks/useCountries";
 import { AuthService } from "@/lib/api/AuthService/AuthService";
 import { SignUpPayload } from "@/lib/api/AuthService/types";
-import { GeneralCountriesService } from "@/lib/api/general/GeneralCountriesService/GeneralCountriesService";
-import { UserService } from "@/lib/api/UserService/UserService";
 import { DropdownOption } from "@/lib/models/common/option";
-import { Country } from "@/lib/models/country";
+import { Session } from "@/lib/session/Session";
 import { SessionContext } from "@/lib/session/SessionContext";
-import { UserContext } from "@/lib/state/UserContext/UserContext";
 import { ROUTES, RoutesId } from "@/routes";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { ApiError } from "next/dist/server/api-utils";
 import { useRouter } from "next/navigation";
-import { useContext, useEffect, useMemo } from "react";
+import { useContext, useEffect } from "react";
 
 type UseSignUpType = {
   countryOptions: DropdownOption<number>[];
@@ -24,34 +22,10 @@ type UseSignUpType = {
 };
 
 export const useSignUp = (): UseSignUpType => {
-  const { session } = useContext(SessionContext);
-  const { setUser, user } = useContext(UserContext);
+  const { session, setSession } = useContext(SessionContext);
   const router = useRouter();
 
-  const { data: countries, isPending: isCountryOptionsLoading } = useQuery<
-    Country[],
-    AxiosError,
-    Country[]
-  >({
-    queryKey: ["countryOptions"],
-    queryFn: async (): Promise<Country[]> => {
-      const client = new GeneralCountriesService();
-
-      const { data } = await client.getAvailableCountries();
-
-      return data;
-    },
-  });
-
-  const countryOptions: DropdownOption<number>[] = useMemo(
-    () =>
-      countries
-        ? countries.map((country) => {
-            return { label: country.name, value: country.id };
-          })
-        : [],
-    [countries]
-  );
+  const { countryOptions, isLoading: isCountryOptionsLoading } = useCountries();
 
   const mutationSignUp = useMutation<void, AxiosError<ApiError>, SignUpPayload>(
     {
@@ -60,14 +34,11 @@ export const useSignUp = (): UseSignUpType => {
 
         const { data } = await authClient.signUp(payload);
 
-        session.setToken(data.accessToken);
-        session.setUserId(data.id);
+        const newSession = new Session();
+        newSession.setToken(data.accessToken);
+        newSession.setUserId(data.id);
 
-        const userClient = new UserService(session);
-
-        const userResult = await userClient.getUserById(data.id);
-
-        setUser(userResult.data);
+        setSession(newSession);
       },
     }
   );
@@ -77,8 +48,10 @@ export const useSignUp = (): UseSignUpType => {
   };
 
   useEffect(() => {
-    if (user) router.push(ROUTES[RoutesId.profile].url.replace(":id", user.id));
-  }, [router, user]);
+    const userId = session.getUserId();
+
+    if (userId) router.push(ROUTES[RoutesId.dashboard].url);
+  }, [router, session]);
 
   return {
     onSignUp,

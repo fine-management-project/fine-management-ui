@@ -16,6 +16,7 @@ export enum RoutesId {
   signIn = "sign-in",
   signUp = "sign-up",
   home = "home",
+  unauthenticated = "unauthenticated",
 }
 
 export const ROUTES: Record<RoutesId, RouteConfigItem> = {
@@ -30,7 +31,7 @@ export const ROUTES: Record<RoutesId, RouteConfigItem> = {
     id: RoutesId.fines,
     label: "Fines",
     icon: <ReceiptIcon />,
-    url: `/user/:id/fines`,
+    url: `/users/:id/fines`,
     authProtected: true,
   },
   [RoutesId.profile]: {
@@ -64,6 +65,12 @@ export const ROUTES: Record<RoutesId, RouteConfigItem> = {
     id: RoutesId.home,
     label: "Home",
     url: "/",
+    authProtected: false,
+  },
+  [RoutesId.unauthenticated]: {
+    id: RoutesId.unauthenticated,
+    label: "Unauthenticated",
+    url: "/unauthenticated",
     authProtected: false,
   },
 };

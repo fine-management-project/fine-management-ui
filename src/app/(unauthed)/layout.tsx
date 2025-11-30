@@ -1,10 +1,20 @@
+"use client";
 import AppHeader from "@/components/AppHeader/AppHeader";
+import { Session } from "@/lib/session/Session";
+import { SessionContext } from "@/lib/session/SessionContext";
+import { useContext, useEffect } from "react";
 
 type Props = {
   children: React.ReactNode;
 };
 
-const UnauthenticatedLayout = async ({ children }: Props) => {
+const UnauthenticatedLayout = ({ children }: Props) => {
+  const { setSession } = useContext(SessionContext);
+
+  useEffect(() => {
+    setSession(new Session());
+  }, []);
+
   return (
     <div className="h-full">
       <AppHeader isAuthenticated={false} />

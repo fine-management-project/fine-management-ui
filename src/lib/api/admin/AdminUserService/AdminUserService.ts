@@ -5,10 +5,16 @@ import { userManagementApiClient } from "../../axios";
 import { BaseService } from "../../BaseService";
 import {
   ApiPaginatedResponse,
+  ApiResponse,
   PaginationOptions,
   SortingOptions,
 } from "../../types";
-import { GetUsersFilters, GetUsersSortingKey } from "./types";
+import {
+  GetUsersFilters,
+  GetUsersSortingKey,
+  UpdateUserBlockedStatusPayload,
+  UpdateUserRolesPayload,
+} from "./types";
 
 export class AdminUserService extends BaseService {
   constructor(session: Session) {
@@ -18,12 +24,36 @@ export class AdminUserService extends BaseService {
   async getUsers(
     filters?: GetUsersFilters,
     sortingOptions?: SortingOptions<GetUsersSortingKey>,
-    paginationOption?: PaginationOptions
+    paginationOptions?: PaginationOptions
   ): Promise<ApiPaginatedResponse<User[]>> {
-    return this.apiClient.post("/admin/users", {
-      filters,
-      sortingOptions,
-      paginationOption,
-    });
+    return (
+      await this.apiClient.post("/admin/users", {
+        filters,
+        sortingOptions,
+        paginationOptions,
+      })
+    ).data;
+  }
+
+  async updateUserRoles(
+    id: string,
+    payload: UpdateUserRolesPayload
+  ): Promise<ApiResponse<User>> {
+    return (
+      await this.apiClient.patch(`/admin/users/${id}/roles`, {
+        ...payload,
+      })
+    ).data;
+  }
+
+  async updateUserBlockedStatus(
+    id: string,
+    payload: UpdateUserBlockedStatusPayload
+  ): Promise<ApiResponse<User>> {
+    return (
+      await this.apiClient.patch(`/admin/users/${id}/blocked`, {
+        ...payload,
+      })
+    ).data;
   }
 }

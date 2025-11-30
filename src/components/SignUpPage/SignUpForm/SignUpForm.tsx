@@ -207,6 +207,7 @@ const SignUpForm = (): React.JSX.Element => {
                         }}
                         aria-invalid={fieldState.invalid}
                         value={field.value}
+                        disabled={field.disabled}
                       >
                         <NativeSelectOption value={-1}>
                           Select a country

@@ -9,3 +9,11 @@ export type GetUsersSortingKey =
   | "lastName"
   | "email"
   | "createdAt";
+
+export type UpdateUserRolesPayload = {
+  roleIds: string[];
+};
+
+export type UpdateUserBlockedStatusPayload = {
+  blocked: boolean;
+};
