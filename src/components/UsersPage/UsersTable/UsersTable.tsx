@@ -56,7 +56,7 @@ const UsersTable = ({
         { searchTerm: filters.searchTerm },
         undefined,
         {
-          offset: pagination.pageIndex,
+          offset: pagination.pageIndex * pagination.pageSize,
           limit: pagination.pageSize,
         }
       );
