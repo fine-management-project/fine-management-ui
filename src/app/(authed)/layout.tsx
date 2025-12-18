@@ -35,7 +35,7 @@ const AuthenticatedLayout = ({ children }: Props) => {
   });
 
   return (
-    <div>
+    <>
       <AppHeader isAuthenticated={true} />
       {isPending ? (
         <Skeleton />
@@ -48,7 +48,7 @@ const AuthenticatedLayout = ({ children }: Props) => {
           </div>
         </UserContextProvider>
       )}
-    </div>
+    </>
   );
 };
 

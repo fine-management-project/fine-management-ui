@@ -49,6 +49,7 @@ export const useAdminUserProfileSection = ({
 
   const { data, isLoading: isFetchingRoles } = useQuery({
     queryKey: [GET_ROLES_QUERY_KEY],
+    enabled: isCurrentUserAdmin,
     queryFn: async () => {
       const client = new AdminRolesService(session);
 

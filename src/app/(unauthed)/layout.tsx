@@ -13,7 +13,7 @@ const UnauthenticatedLayout = ({ children }: Props) => {
 
   useEffect(() => {
     setSession(new Session());
-  }, []);
+  }, [setSession]);
 
   return (
     <div className="h-full">

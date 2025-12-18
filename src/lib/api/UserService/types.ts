@@ -8,3 +8,7 @@ export type UpdateUserCommonFields = {
   age: number;
   address: AddressPayload;
 };
+
+export type VerifyUserEmailPayload = {
+  verificationToken: string;
+};

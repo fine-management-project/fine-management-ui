@@ -57,10 +57,16 @@ const formSchema = z.object({
 });
 
 const UserProfileFrom = ({ user }: Props): React.JSX.Element => {
-  const { isEditingCurrentUser, editedUser, handleSave, isLoading } =
-    useUserProfileForm({
-      user,
-    });
+  const {
+    isEditingCurrentUser,
+    editedUser,
+    handleSave,
+    isLoading,
+    isRequestVerificationLoading,
+    requestEmailVerification,
+  } = useUserProfileForm({
+    user,
+  });
   const { countryOptions, isLoading: isCountryOptionsLoading } = useCountries();
 
   const form = useForm<UserProfileFormType>({
@@ -107,6 +113,17 @@ const UserProfileFrom = ({ user }: Props): React.JSX.Element => {
                 Account is active!
               </Badge>
             )}
+          </div>
+          <div>
+            <Button
+              className="p-0"
+              variant={"link"}
+              onClick={requestEmailVerification}
+              type="button"
+            >
+              Request Email Verification
+              {isRequestVerificationLoading && <Spinner />}
+            </Button>
           </div>
           <div>
             Your email is <span className="font-bold italic">{user.email}</span>

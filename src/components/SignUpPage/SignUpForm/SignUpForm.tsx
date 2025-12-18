@@ -91,6 +91,7 @@ const SignUpForm = (): React.JSX.Element => {
     event?: BaseSyntheticEvent
   ) => {
     event?.preventDefault();
+    console.log(payload);
 
     onSignUp({
       ...payload,
