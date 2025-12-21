@@ -1,7 +1,7 @@
-import SignInForm from "@/components/SignInPage/SignInForm";
+import SignInWrapper from "@/components/SignInPage/SignInWrapper";
 
 const SignInPage = (): React.JSX.Element => {
-  return <SignInForm />;
+  return <SignInWrapper />;
 };
 
 export default SignInPage;
