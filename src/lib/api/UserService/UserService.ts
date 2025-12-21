@@ -3,7 +3,11 @@ import { BaseService } from "../BaseService";
 import { userManagementApiClient } from "../axios";
 import { ApiResponse } from "../types";
 import { User } from "@/lib/models/user";
-import { UpdateUserCommonFields, VerifyUserEmailPayload } from "./types";
+import {
+  ChangeUserEmailPayload,
+  UpdateUserCommonFields,
+  VerifyUserEmailPayload,
+} from "./types";
 
 export class UserService extends BaseService {
   constructor(session: Session) {
@@ -40,5 +44,20 @@ export class UserService extends BaseService {
     return await this.apiClient.post(
       `/users/${id}/request-user-email-verification`
     );
+  }
+
+  async requestChangeUserEmail(id: string): Promise<void> {
+    return await this.apiClient.post(`/users/${id}/request-change-user-email`);
+  }
+
+  async changeUserEmail(
+    id: string,
+    payload: ChangeUserEmailPayload
+  ): Promise<ApiResponse<User>> {
+    return (
+      await this.apiClient.patch(`/users/${id}/change-email`, {
+        ...payload,
+      })
+    ).data;
   }
 }

@@ -12,3 +12,8 @@ export type UpdateUserCommonFields = {
 export type VerifyUserEmailPayload = {
   verificationToken: string;
 };
+
+export type ChangeUserEmailPayload = {
+  changeEmailToken: string;
+  newEmail: string;
+};
