@@ -10,7 +10,11 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { UserProfileFormType, useUserProfileForm } from "./hooks";
+import {
+  useRequestChanges,
+  UserProfileFormType,
+  useUserProfileForm,
+} from "./hooks";
 import z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -57,16 +61,18 @@ const formSchema = z.object({
 });
 
 const UserProfileFrom = ({ user }: Props): React.JSX.Element => {
+  const { isEditingCurrentUser, editedUser, handleSave, isLoading } =
+    useUserProfileForm({
+      user,
+    });
+
   const {
-    isEditingCurrentUser,
-    editedUser,
-    handleSave,
-    isLoading,
     isRequestVerificationLoading,
     requestEmailVerification,
-  } = useUserProfileForm({
-    user,
-  });
+    isRequestChangeUserEmailLoading,
+    requestChangeUserEmail,
+  } = useRequestChanges({ user });
+
   const { countryOptions, isLoading: isCountryOptionsLoading } = useCountries();
 
   const form = useForm<UserProfileFormType>({
@@ -127,6 +133,17 @@ const UserProfileFrom = ({ user }: Props): React.JSX.Element => {
           </div>
           <div>
             Your email is <span className="font-bold italic">{user.email}</span>
+          </div>
+          <div>
+            <Button
+              className="p-0"
+              variant={"link"}
+              onClick={requestChangeUserEmail}
+              type="button"
+            >
+              Request Change User Email
+              {isRequestChangeUserEmailLoading && <Spinner />}
+            </Button>
           </div>
           <FormField
             control={form?.control}

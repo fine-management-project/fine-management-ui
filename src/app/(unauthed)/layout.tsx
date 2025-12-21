@@ -9,7 +9,7 @@ type Props = {
 };
 
 const UnauthenticatedLayout = ({ children }: Props) => {
-  const { setSession } = useContext(SessionContext);
+  const { setSession, session } = useContext(SessionContext);
 
   useEffect(() => {
     setSession(new Session());
@@ -17,7 +17,7 @@ const UnauthenticatedLayout = ({ children }: Props) => {
 
   return (
     <div className="h-full">
-      <AppHeader isAuthenticated={false} />
+      <AppHeader isAuthenticated={session.hasToken()} />
       <div className="relative flex h-full p-9 w-full">
         <div className="flex flex-grow-1 flex-wrap justify-center">
           {children}

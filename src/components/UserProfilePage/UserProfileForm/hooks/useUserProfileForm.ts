@@ -27,8 +27,6 @@ export type UseUserProfileForm = {
   editedUser: User;
   handleSave: (payload: UserProfileFormType) => void;
   isLoading: boolean;
-  requestEmailVerification: () => Promise<void>;
-  isRequestVerificationLoading: boolean;
 };
 
 export const useUserProfileForm = ({ user }: Props): UseUserProfileForm => {
@@ -75,31 +73,10 @@ export const useUserProfileForm = ({ user }: Props): UseUserProfileForm => {
     }
   };
 
-  const mutationRequestEmailVerification = useMutation<
-    void,
-    AxiosError<ApiError>
-  >({
-    mutationFn: async (): Promise<void> => {
-      const client = new UserService(session);
-
-      return client.requestUserEmailVerification(user.id ?? "");
-    },
-  });
-
-  const requestEmailVerification = async () => {
-    try {
-      await mutationRequestEmailVerification.mutate();
-    } catch (e) {
-      console.error(e);
-    }
-  };
-
   return {
     isEditingCurrentUser,
     editedUser,
     handleSave,
     isLoading: mutationUpdateCommonFields.isPending,
-    isRequestVerificationLoading: mutationRequestEmailVerification.isPending,
-    requestEmailVerification,
   };
 };
