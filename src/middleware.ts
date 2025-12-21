@@ -13,6 +13,7 @@ export async function middleware(request: NextRequest) {
       ROUTES[RoutesId.signIn].url,
       ROUTES[RoutesId.signUp].url,
       ROUTES[RoutesId.unauthenticated].url,
+      ROUTES[RoutesId.forgotPassword].url,
     ].includes(pathname) &&
     hasToken &&
     !!userId

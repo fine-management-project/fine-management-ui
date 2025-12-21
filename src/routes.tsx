@@ -17,6 +17,9 @@ export enum RoutesId {
   signUp = "sign-up",
   home = "home",
   unauthenticated = "unauthenticated",
+  emailVerification = "email-verification",
+  changeEmail = "change-email",
+  forgotPassword = "forgot-password",
 }
 
 export const ROUTES: Record<RoutesId, RouteConfigItem> = {
@@ -57,8 +60,13 @@ export const ROUTES: Record<RoutesId, RouteConfigItem> = {
   [RoutesId.signUp]: {
     id: RoutesId.signUp,
     label: "Sign Up",
-    icon: <UsersIcon />,
     url: "/auth/sign-up",
+    authProtected: false,
+  },
+  [RoutesId.forgotPassword]: {
+    id: RoutesId.forgotPassword,
+    label: "Forgot password",
+    url: "/auth/forgot-password",
     authProtected: false,
   },
   [RoutesId.home]: {
@@ -72,5 +80,17 @@ export const ROUTES: Record<RoutesId, RouteConfigItem> = {
     label: "Unauthenticated",
     url: "/unauthenticated",
     authProtected: false,
+  },
+  [RoutesId.emailVerification]: {
+    id: RoutesId.emailVerification,
+    label: "Email verification",
+    url: "/email-verification",
+    authProtected: true,
+  },
+  [RoutesId.changeEmail]: {
+    id: RoutesId.changeEmail,
+    label: "Change email",
+    url: "/change-email",
+    authProtected: true,
   },
 };
