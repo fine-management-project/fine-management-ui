@@ -56,4 +56,8 @@ export class AdminUserService extends BaseService {
       })
     ).data;
   }
+
+  async deleteUserById(id: string): Promise<void> {
+    return this.apiClient.delete(`/admin/users/${id}`);
+  }
 }

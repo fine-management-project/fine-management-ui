@@ -1,8 +1,9 @@
 import { Badge } from "@/components/ui/badge";
 import { User } from "@/lib/models/user";
 import { ColumnDef } from "@tanstack/react-table";
-import { EditIcon, ReceiptIcon, TrashIcon } from "lucide-react";
+import { EditIcon, ReceiptIcon } from "lucide-react";
 import Link from "next/link";
+import DeleteUserModal from "../DeleteUserModal";
 
 type UseUsersTable = {
   columns: ColumnDef<User>[];
@@ -81,7 +82,7 @@ export const useUsersTable = ({ currentUserId }: Props): UseUsersTable => {
               <ReceiptIcon className="mr-6 cursor-pointer  hover:text-purple-400" />
             </Link>
             {currentUserId !== row.original.id && (
-              <TrashIcon className="cursor-pointer  hover:text-purple-400" />
+              <DeleteUserModal userId={row.original.id} />
             )}
           </div>
         );
