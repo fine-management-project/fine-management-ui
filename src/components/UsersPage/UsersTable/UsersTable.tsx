@@ -21,8 +21,9 @@ import { AdminUserService } from "@/lib/api/admin/AdminUserService/AdminUserServ
 import { SessionContext } from "@/lib/session/SessionContext";
 import { Skeleton } from "@/components/ui/skeleton";
 import { INITIAL_USERS_FILTERS_STATE, useUsersPageContext } from "../context";
-import { useUsersTable } from "./hooks/useUsersTable";
+import { useUsersTable } from "./hooks";
 import { compareParamsForInitialData } from "@/lib/api/utils";
+import { USERS_QUERY_KEY } from "./constants";
 
 type Props = {
   initialData: User[];
@@ -30,8 +31,6 @@ type Props = {
   initialOffset: number;
   initialLimit: number;
 };
-
-const QUERY_KEY = "getUsers";
 
 const UsersTable = ({
   initialData,
@@ -49,7 +48,12 @@ const UsersTable = ({
   const { columns } = useUsersTable({ currentUserId: session.getUserId() });
 
   const { data, isLoading } = useQuery({
-    queryKey: [QUERY_KEY, pagination.pageIndex, pagination.pageSize, filters],
+    queryKey: [
+      USERS_QUERY_KEY,
+      pagination.pageIndex,
+      pagination.pageSize,
+      filters,
+    ],
     queryFn: async () => {
       const service = new AdminUserService(session);
       const { data, total } = await service.getUsers(
