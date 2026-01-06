@@ -41,7 +41,7 @@ const AuthenticatedLayout = ({ children }: Props) => {
         <Skeleton />
       ) : (
         <UserContextProvider user={user}>
-          <div className="relative flex h-full p-9 w-full">
+          <div className="relative h-full p-9 w-full">
             <AppSideBar />
 
             <div className="flex-grow-1 flex-wrap">{children}</div>

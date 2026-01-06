@@ -1,11 +1,11 @@
 export enum Currency {
   EUR = "EUR",
   USD = "USD",
-  GBP = "GBP",
+  UAH = "UAH",
 }
 
 export enum CurrencyCode {
   EUR = "€",
   USD = "$",
-  GBP = "£",
+  UAH = "₴",
 }

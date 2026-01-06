@@ -1,97 +1,53 @@
 "use client";
 
-import { User } from "@/lib/models/user";
+import { PagePaginationOptions } from "@/lib/api/types";
+import { Fine } from "@/lib/models/fine";
 import {
   flexRender,
   getCoreRowModel,
+  getPaginationRowModel,
   useReactTable,
 } from "@tanstack/react-table";
+import { Dispatch, SetStateAction } from "react";
+import { useFinesTable } from "../hooks";
+import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
 import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
   TableHeader,
   TableRow,
+  TableHead,
+  TableBody,
+  TableCell,
+  Table,
 } from "@/components/ui/table";
-import { Button } from "@/components/ui/button";
-import { useContext, useState } from "react";
-import { useQuery } from "@tanstack/react-query";
-import { AdminUserService } from "@/lib/api/admin/AdminUserService/AdminUserService";
-import { SessionContext } from "@/lib/session/SessionContext";
-import { Skeleton } from "@/components/ui/skeleton";
-import { INITIAL_USERS_FILTERS_STATE, useUsersPageContext } from "../context";
-import { useUsersTable } from "./hooks";
-import { compareParamsForInitialData } from "@/lib/api/utils";
-import { USERS_QUERY_KEY } from "./constants";
 
 type Props = {
-  initialData: User[];
-  initialTotal: number;
-  initialOffset: number;
-  initialLimit: number;
+  data: Fine[];
+  isLoading: boolean;
+  total: number;
+  pagination: PagePaginationOptions;
+  setPagination: Dispatch<SetStateAction<PagePaginationOptions>>;
+  setSelectedFine: Dispatch<SetStateAction<Fine | null>>;
 };
 
-const UsersTable = ({
-  initialData,
-  initialTotal,
-  initialLimit,
-  initialOffset,
+const FinesTable = ({
+  data,
+  total,
+  isLoading,
+  pagination,
+  setPagination,
+  setSelectedFine,
 }: Props): React.JSX.Element => {
-  const initialPagination = {
-    pageIndex: initialOffset, //initial page index
-    pageSize: initialLimit, //default page size
-  };
-  const [pagination, setPagination] = useState(initialPagination);
-  const { session } = useContext(SessionContext);
-  const { filters } = useUsersPageContext();
-  const { columns } = useUsersTable({ currentUserId: session.getUserId() });
-
-  const { data, isLoading } = useQuery({
-    queryKey: [
-      USERS_QUERY_KEY,
-      pagination.pageIndex,
-      pagination.pageSize,
-      filters,
-    ],
-    queryFn: async () => {
-      const service = new AdminUserService(session);
-      const { data, total } = await service.getUsers(
-        { searchTerm: filters.searchTerm },
-        undefined,
-        {
-          offset: pagination.pageIndex * pagination.pageSize,
-          limit: pagination.pageSize,
-        }
-      );
-
-      return {
-        users: data,
-        total,
-      };
-    },
-    initialData: () =>
-      compareParamsForInitialData(
-        { ...pagination, filters },
-        {
-          ...initialPagination,
-          filters: INITIAL_USERS_FILTERS_STATE,
-        },
-        {
-          users: initialData,
-          total: initialTotal,
-        }
-      ),
-  });
+  const { columns } = useFinesTable({ setSelectedFine });
 
   const table = useReactTable({
-    data: data?.users ?? initialData,
+    data: data,
     columns,
     getCoreRowModel: getCoreRowModel(),
     manualPagination: true,
-    rowCount: initialTotal,
+    rowCount: total,
     onPaginationChange: setPagination,
-
+    getPaginationRowModel: getPaginationRowModel(),
     state: {
       pagination,
     },
@@ -185,4 +141,4 @@ const UsersTable = ({
   );
 };
 
-export default UsersTable;
+export default FinesTable;

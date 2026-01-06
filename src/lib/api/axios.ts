@@ -11,3 +11,7 @@ export const createApiClient = (baseUrl: string) => {
 export const userManagementApiClient = createApiClient(
   process.env.NEXT_PUBLIC_USER_MANAGEMENT_SERVICE_API_URL!
 );
+
+export const fineManagementApiClient = createApiClient(
+  process.env.NEXT_PUBLIC_FINE_MANAGEMENT_SERVICE_API_URL!
+);
