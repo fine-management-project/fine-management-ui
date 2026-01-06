@@ -10,7 +10,7 @@ type Props = {
 
 const FineStatusBadge = ({ value }: Props): React.JSX.Element => {
   return (
-    <Badge style={{ backgroundColor: FineStatusColor[value] }}>
+    <Badge style={{ backgroundColor: FineStatusColor[value], color: "black" }}>
       {value.toUpperCase()}
     </Badge>
   );

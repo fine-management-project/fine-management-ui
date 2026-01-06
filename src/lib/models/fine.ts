@@ -1,29 +1,35 @@
 import { Currency } from "./currency";
 
 export enum FineType {
-  administrative = "administrative",
-  criminal = "criminal",
-  penalties = "penalties",
-  financial = "financial",
+  TRAFFIC = "TRAFFIC",
+  ENVIRONMENTAL = "ENVIRONMENTAL",
+  CORPORATE = "CORPORATE",
+  CONTEMPT = "CONTEMPT",
+  TAX = "TAX",
 }
 
 export enum FineStatus {
-  active = "ACTIVE",
-  paid = "PAID",
-  appealed = "APPEALED",
-  overdue = "OVERDUE",
+  NEW = "NEW",
+  PROCESSING_DOCUMENT = "PROCESSING_DOCUMENT",
+  READY_FOR_SIGNING = "READY_FOR_SIGNING",
+  PROCESSING_SIGNING = "PROCESSING_SIGNING",
+  READY_FOR_PAYMENT = "READY_FOR_PAYMENT",
+  PROCESSING_PAYMENT = "PROCESSING_PAYMENT",
+  PAID = "PAID",
+  CLOSED = "CLOSED",
 }
 
 export type Fine = {
-  id: number;
+  id: string;
+  userId: string;
+  issuerId: string;
   type: FineType;
   amount: number;
   reason: string;
-  description: string;
   currency: Currency;
   createdAt: string;
   updatedAt: string;
-  dueDate: string;
   status: FineStatus;
-  issuedByUserId: number;
+  fineDocUrl: string | null;
+  fineDocSignedUrl: string | null;
 };

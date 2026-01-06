@@ -1,4 +1,3 @@
-import { unfinishedFinesMock } from "@/components/DashboardPage/AssignedActionsCard/mocks";
 import { Fine } from "@/lib/models/fine";
 
 export type DashboardData = {
@@ -7,9 +6,7 @@ export type DashboardData = {
 
 export const getDashboardData = async (): Promise<DashboardData> => {
   try {
-    const unfinishedFines: Fine[] = await new Promise((res) =>
-      res(unfinishedFinesMock)
-    );
+    const unfinishedFines: Fine[] = await new Promise((res) => res([]));
 
     return {
       unfinishedFines,

@@ -19,6 +19,11 @@ export type PaginationOptions = {
   offset?: number;
 };
 
+export type PagePaginationOptions = {
+  pageIndex: number;
+  pageSize: number;
+};
+
 export enum SortingDirection {
   ASC = "ASC",
   DESC = "DESC",

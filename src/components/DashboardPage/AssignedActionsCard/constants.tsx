@@ -19,8 +19,8 @@ export const columns: ColumnDef<Fine>[] = [
     cell: (value) => <FineStatusBadge value={value.row.original.status} />,
   },
   {
-    accessorKey: "dueDate",
-    header: "Due Date",
-    accessorFn: (value) => value.dueDate,
+    accessorKey: "createdAt",
+    header: "Created Date",
+    accessorFn: (value) => value.createdAt,
   },
 ];
