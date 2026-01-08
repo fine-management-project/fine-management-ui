@@ -61,6 +61,13 @@ const FineForm = ({
               <span className="italic">Updated At:</span>{" "}
               <span className="font-bold">{fine.updatedAt}</span>
             </div>
+            {fine.fineDocUrl && (
+              <div className="mt-2 mb-2 text-lg underline text-blue-600">
+                <a href={fine.fineDocUrl} className="italic">
+                  Document to Sign Link
+                </a>
+              </div>
+            )}
           </div>
         )}
 
