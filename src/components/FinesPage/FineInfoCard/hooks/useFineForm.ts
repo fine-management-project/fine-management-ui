@@ -88,7 +88,12 @@ export const useFineForm = ({ fine, userId, setSelectedFine }: Props) => {
         )
       ).data;
 
-      if (!isEditStatusDisabled) {
+      if (
+        !isEditStatusDisabled &&
+        (variables.payload.status === FineStatus.NEW ||
+          variables.payload.status === FineStatus.CLOSED) &&
+        form.formState.dirtyFields.status
+      ) {
         fine = (
           await adminFineService.updateFineStatus(
             variables.fineId,
@@ -99,8 +104,9 @@ export const useFineForm = ({ fine, userId, setSelectedFine }: Props) => {
 
       return fine;
     },
-    onSuccess: () => {
+    onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: [FINES_QUERY_KEY] });
+      setSelectedFine(data);
     },
   });
 
