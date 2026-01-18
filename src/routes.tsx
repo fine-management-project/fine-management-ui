@@ -20,6 +20,7 @@ export enum RoutesId {
   emailVerification = "email-verification",
   changeEmail = "change-email",
   forgotPassword = "forgot-password",
+  payForFine = "pay-for-fine",
 }
 
 export const ROUTES: Record<RoutesId, RouteConfigItem> = {
@@ -91,6 +92,12 @@ export const ROUTES: Record<RoutesId, RouteConfigItem> = {
     id: RoutesId.changeEmail,
     label: "Change email",
     url: "/change-email",
+    authProtected: true,
+  },
+  [RoutesId.payForFine]: {
+    id: RoutesId.payForFine,
+    label: "Pay for fine",
+    url: "/users/:id/fines/:fineId/pay",
     authProtected: true,
   },
 };

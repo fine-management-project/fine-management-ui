@@ -21,6 +21,8 @@ import { Currency } from "@/lib/models/currency";
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
 import { Dispatch, SetStateAction } from "react";
+import FineStatusBadge from "@/components/common";
+import { ROUTES, RoutesId } from "@/routes";
 
 type Props = {
   fine: Fine | null;
@@ -44,6 +46,9 @@ const FineForm = ({
             <div className="mb-1">
               <span className="italic">Fine Id:</span>{" "}
               <span className="font-bold">{fine.id}</span>
+            </div>
+            <div className="mb-1">
+              <FineStatusBadge value={fine.status} />
             </div>
             <div className="mb-1">
               <span className="italic">Issuer Id:</span>{" "}
@@ -207,11 +212,23 @@ const FineForm = ({
 
         {error && <FormMessage>{error}</FormMessage>}
 
-        <div className="mt-2">
+        <div className="mt-2 flex justify-between">
           <Button disabled={form.formState.disabled} size="lg" type="submit">
             Save
             {isLoading && <Spinner />}
           </Button>
+
+          {fine?.status === FineStatus.READY_FOR_PAYMENT && (
+            <Button disabled={form.formState.disabled} size="lg" type="button">
+              <a
+                href={ROUTES[RoutesId.payForFine].url
+                  .replace(":id", userId)
+                  .replace(":fineId", fine.id)}
+              >
+                Pay
+              </a>
+            </Button>
+          )}
         </div>
       </form>
     </Form>
