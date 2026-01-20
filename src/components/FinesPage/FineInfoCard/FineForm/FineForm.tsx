@@ -218,7 +218,8 @@ const FineForm = ({
             {isLoading && <Spinner />}
           </Button>
 
-          {fine?.status === FineStatus.READY_FOR_PAYMENT && (
+          {(fine?.status === FineStatus.READY_FOR_PAYMENT ||
+            fine?.status === FineStatus.PROCESSING_PAYMENT) && (
             <Button disabled={form.formState.disabled} size="lg" type="button">
               <a
                 href={ROUTES[RoutesId.payForFine].url
