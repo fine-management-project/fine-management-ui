@@ -38,6 +38,8 @@ const FineForm = ({
   const { form, isEditStatusDisabled, handleSubmit, isLoading, error } =
     useFineForm({ fine, userId, setSelectedFine });
 
+  console.log("fine", fine);
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(handleSubmit)}>
@@ -220,7 +222,7 @@ const FineForm = ({
 
           {(fine?.status === FineStatus.READY_FOR_PAYMENT ||
             fine?.status === FineStatus.PROCESSING_PAYMENT) && (
-            <Button disabled={form.formState.disabled} size="lg" type="button">
+            <Button size="lg" type="button">
               <a
                 href={ROUTES[RoutesId.payForFine].url
                   .replace(":id", userId)
