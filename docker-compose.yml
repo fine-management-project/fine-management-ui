@@ -1,0 +1,23 @@
+name: fine-management-ui
+
+services:
+
+  app: 
+    build:
+      context: ./
+      dockerfile: Dockerfile.dev
+    container_name: fine-management-ui-app
+    restart: always
+    ports:
+      - '${APP_PORT}:${APP_PORT}'
+    volumes:
+      - ./:/app
+      - /app/node_modules 
+      - /app/.next
+    networks:
+      - fine-management-app-network
+
+networks:
+  fine-management-app-network:
+    external: true
+    name: fine-management-app-network
