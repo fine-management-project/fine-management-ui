@@ -2,14 +2,15 @@ import { AxiosError, AxiosInstance } from "axios";
 import { Session } from "../session/Session";
 import { redirect } from "next/navigation";
 import { ROUTES, RoutesId } from "@/routes";
+import { APIClient } from "./axios";
 
 const API_ROUTES = ["/auth/sign-in", "/auth/sign-up", "/auth/sign-out"];
 export abstract class BaseService {
   protected apiClient: AxiosInstance;
   protected session: Session;
 
-  constructor(apiClient: AxiosInstance, session?: Session) {
-    this.apiClient = apiClient;
+  constructor(apiClient: APIClient, session?: Session) {
+    this.apiClient = apiClient.getCorrectAxiosInstance();
 
     const newSession = session ?? new Session();
     this.session = newSession;
@@ -24,7 +25,7 @@ export abstract class BaseService {
           error.status === 401 &&
           !API_ROUTES.find((routeURL) => error.config?.url === routeURL)
         ) {
-          if (typeof window === "undefined") {
+          if (this.isServerSide()) {
             redirect("/api/auth/invalidate-session");
           } else {
             this.session.clear();
@@ -35,6 +36,10 @@ export abstract class BaseService {
         return Promise.reject(error);
       }
     );
+  }
+
+  private isServerSide() {
+    return typeof window === "undefined";
   }
 
   protected updateSession(newSession: Session) {
